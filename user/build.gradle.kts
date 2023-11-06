@@ -18,6 +18,7 @@ repositories {
 	mavenCentral()
 }
 
+extra["springMySqlJpa"] = "2.7.0"
 extra["springCloudVersion"] = "2022.0.4"
 
 dependencies {
@@ -26,10 +27,14 @@ dependencies {
 	implementation("org.jetbrains.kotlin:kotlin-reflect")
 	implementation("org.springframework.cloud:spring-cloud-starter-netflix-eureka-client")
 	testImplementation("org.springframework.boot:spring-boot-starter-test")
+	implementation("org.springframework.boot:spring-boot-starter-data-jpa")
+	runtimeOnly("mysql:mysql-connector-java:8.0.31")
+	runtimeOnly("org.hibernate:hibernate-core:5.6.10.Final")
 }
 
 dependencyManagement {
 	imports {
+		mavenBom("org.springframework.boot:spring-boot-starter-data-jpa:${property("springMySqlJpa")}")
 		mavenBom("org.springframework.cloud:spring-cloud-dependencies:${property("springCloudVersion")}")
 	}
 }

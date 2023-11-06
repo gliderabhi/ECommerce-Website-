@@ -18,17 +18,17 @@ class GatewayRoutesConfiguration {
                 r.path("/product/jewellery/**")
                     .uri("lb://JEWELLERY")
             }
-            .route("PRODUCTS") { r ->
+            .route("products") { r ->
                 r.path("/products/**")
-                    .uri("lb://PRODUCTS")
+                    .uri("lb://products")
             }
             .route("WATCHES") { r ->
                 r.path("/products/watches/**")
                     .uri("lb://WATCHES")
             }
-            .route("user") { r ->
+            .route("USER") { r ->
                 r.path("/user/**")
-                    .uri("https://localhost:5054/")
+                    .uri("lb://user")
             }
             .route("WOOLEN") { r ->
                 r.path("/products/woolen/**")

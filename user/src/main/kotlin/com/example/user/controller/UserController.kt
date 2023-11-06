@@ -1,19 +1,37 @@
 package com.example.user.controller
 
-import org.springframework.web.bind.annotation.GetMapping
-import org.springframework.web.bind.annotation.RestController
+import com.example.user.model.LoginCredentials
+import com.example.user.model.LoginResponse
+import com.example.user.model.Users
+import com.example.user.service.AuthenticationService
+import org.springframework.http.ResponseEntity
+import org.springframework.web.bind.annotation.*
 import org.springframework.web.client.RestTemplate
 
 @RestController
+//@RequestMapping("/user")
 class UserController(
-    private val restTemplate: RestTemplate
+    private val restTemplate: RestTemplate,
+    private val authenticationService: AuthenticationService
 ) {
 
-    @GetMapping("/user/")
-    fun getUser(): String {
-        val msg = restTemplate.getForObject("lb://products/products/1", String::class.java)
-        println(msg)
-        return msg + "Lets get something"
+    @PostMapping("/register")
+    fun register(@RequestBody user: Users): LoginResponse {
+        return authenticationService.registerUser(user)
+    }
 
+    @PostMapping("/login")
+    fun login(@RequestBody credentials: LoginCredentials): LoginResponse? {
+        return authenticationService.loginUser(credentials)
+    }
+
+    @PostMapping("/logout")
+    fun logout(@RequestHeader("Authorization") token: String): Boolean {
+        return authenticationService.logoutUser(token)
+    }
+
+    @PostMapping("/password/reset")
+    fun resetPassword(@RequestBody email: String): LoginResponse? {
+        return authenticationService.resetPassword(email)
     }
 }
